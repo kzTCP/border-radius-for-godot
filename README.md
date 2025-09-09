@@ -35,11 +35,11 @@ This guide explains how to apply rounded corners (**corner-radius / border-radiu
 
 ## 🔗 Resources (Must Be Included)
 
-- 🎨 [Corner-Radius Shader](https://godotshaders.com/shader/corner-radius/)  
-- 🖼 [Set Corner Radius for Texture](https://godotshaders.com/shader/set-corner-radius-for-texture/)  
-- 📘 [Godot Docs: Your First 2D Shader](https://docs.godotengine.org/en/3.6/tutorials/shaders/your_first_shader/your_first_2d_shader.html)  
-- 🎥 [Godot Shaders: An Introduction (YouTube)](https://www.youtube.com/watch?v=JM09avtMlmE)  
-- 🤖 [DeepSeek](https://chat.deepseek.com/)  
+- 🎨 Godotshaders: [Corner-Radius Shader](https://godotshaders.com/shader/corner-radius/)  
+- 🖼 Godotshaders: [Set Corner Radius for Texture](https://godotshaders.com/shader/set-corner-radius-for-texture/)  
+- 📘 Godot Docs: [Your First 2D Shader](https://docs.godotengine.org/en/3.6/tutorials/shaders/your_first_shader/your_first_2d_shader.html)  
+- 🎥 YouTube: [Godot Shaders: An Introduction](https://www.youtube.com/watch?v=JM09avtMlmE)  
+- 🤖 The Best Ai: [DeepSeek](https://chat.deepseek.com/)  
 
 ---
 
