@@ -23,25 +23,61 @@ This guide explains how to apply rounded corners (**corner-radius / border-radiu
 - Use a `Panel` as parent and a `TextureRect` with shader as child.  
 - Match **corner-radius** values between the two.  
 - Adjust size values if alignment looks off.  
+- Supports **stretch modes 0..7** (same as `TextureRect` in Godot).
 
 ---
 
 ## ⚠️ Notes
 - Always keep the `TextureRect` and `Panel` the same size.  
 - If corners do not align perfectly, tweak the shader size slightly.  
+- **Stretch Modes:**
+  - Matches Godot’s built-in behavior.
+  - `0..7` modes are supported (`hint_range`).
+  - `expand` only affects **mode 0**.
+  - Modes **3 and 4** won’t expand beyond `rect_size` (not like `TextureRect`).
+- Corners apply only within the **available pixels** in `rect_size`.
 - Copy **`BorderRadius.gdshader`** file into your project.  
 
 ---
 
-## 🔗 Resources (Must Be Included)
+## 📐 Texture Size vs Rect Size
+
+It’s important to understand the difference between these two parameters:
+
+- `tex_size` → The **original texture’s resolution** in pixels (e.g., `512x512`).
+
+  - This is the **raw size** of the image you load into the shader.
+
+  - Does **not** change when you resize the `TextureRect` node.
+
+- `rect_size` → The **display size** of the `TextureRect` in the scene (e.g., `180x90`).
+
+  - This is the area where the texture is drawn, after stretching or scaling.
+
+  - Affected by `stretch_mode` and the node’s layout size.
+
+👉 Example:
+
+- If you load a `512x512` image into a `TextureRect` that is only `180x90` in the scene:
+  - `tex_size = vec2(512, 512)`
+  - `rect_size = vec2(180, 90)`
+
+- The shader uses both values to calculate how the image should be mapped and **where the corner-radius should cut pixels.**
+
+## 🔗 Resources
 
 - 🎨 Godotshaders: [Corner-Radius Shader](https://godotshaders.com/shader/corner-radius/)  
 - 🖼 Godotshaders: [Set Corner Radius for Texture](https://godotshaders.com/shader/set-corner-radius-for-texture/)  
 - 📘 Godot Docs: [Your First 2D Shader](https://docs.godotengine.org/en/3.6/tutorials/shaders/your_first_shader/your_first_2d_shader.html)  
-- 🎥 YouTube: [Godot Shaders: An Introduction](https://www.youtube.com/watch?v=JM09avtMlmE)  
-- 🤖 The Best Ai: [DeepSeek](https://chat.deepseek.com/)  
+- 🎥 YouTube: [Godot Shaders: An Introduction (YouTube)](https://www.youtube.com/watch?v=JM09avtMlmE)  
+- 🤖 Border radius by [DeepSeek](https://chat.deepseek.com/)
+- 🤖 Stretch mode by [ChatGPT](https://chat.openai.com/)  
 
 ---
 
 ## ✅ Summary
 By syncing the **Panel corner radius** with the **TextureRect shader radius**, you get perfectly rounded corners for images in **Godot**.
+
+Now with **stretch modes 0..7**, the shader works like `TextureRect` while preserving corner-radius clipping.
+
+And remember: `tex_size` **is the raw image resolution**, `rect_size` **is the final drawn size** — the shader needs both to properly stretch and cut corners.
