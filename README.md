@@ -14,8 +14,11 @@ This guide explains how to apply rounded corners (**corner-radius / border-radiu
 
 ## 🎥 Demo Video
 [![My Video Showcase](https://img.youtube.com/vi/UM1I97-V_I8/0.jpg)](https://www.youtube.com/watch?v=UM1I97-V_I8)
+
 ▶️ *Click to watch my full demo on YouTube.*
+
 [![My Video Showcase](https://img.youtube.com/vi/68dlosOz77w/0.jpg)](https://www.youtube.com/watch?v=68dlosOz77w)
+
 ▶️ *NEW: Enhanced features demo - Click to watch* 
 
 
