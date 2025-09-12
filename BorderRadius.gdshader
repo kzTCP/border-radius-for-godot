@@ -12,6 +12,24 @@ uniform float right = 0.0;
 uniform float bottom = 0.0;
 uniform float left = 0.0;
 
+
+// Resize option
+uniform bool use_resize = false; // Enable/disable resizing
+
+/* --- ALIGNMENT AND EMPTY SPACE SETTINGS --- */
+uniform vec2 new_size = vec2(180.0, 90.0);       // Desired size in pixels
+
+// Position enum (0..8)
+// 0: topLeft, 1: topCenter, 2: topRight
+// 3: centerLeft, 4: center, 5: centerRight
+// 6: bottomLeft, 7: bottomCenter, 8: bottomRight
+uniform int align: hint_range(0, 8, 1) = 4;
+
+// Empty space behavior
+uniform bool use_fill = false;           
+uniform vec4 fill_color : hint_color = vec4(0.0, 0.0, 0.0, 255.0); // Default transparent
+
+
 /* --- HELPERS --- */
 vec2 get_uv(vec2 uv) {
     vec2 result_uv = uv;
@@ -75,27 +93,81 @@ bool checkCorner(vec2 uv, float radius, vec2 corner_pos, bool flip_x, bool flip_
     return false;
 }
 
-void fragment() {
-    vec2 uv = get_uv(UV);
+vec2 get_offset() {
+    vec2 offset = vec2(0.0);
 
-    // --- SKIP PIXELS OUTSIDE ORIGINAL TEXTURE (KEEP MODES) ---
-    bool skip = false;
-    if (stretch_mode == 3 || stretch_mode == 4 || stretch_mode == 5 || stretch_mode == 6) {
-        if (uv.x < 0.0 || uv.y < 0.0 || uv.x > 1.0 || uv.y > 1.0) {
-            COLOR = vec4(0.0);
-            skip = true;
-        }
+    // Horizontal
+    if (align == 0 || align == 3 || align == 6) {
+        offset.x = 0.0; // left
+    } else if (align == 1 || align == 4 || align == 7) {
+        offset.x = (rect_size.x - new_size.x) * 0.5; // center
+    } else {
+        offset.x = rect_size.x - new_size.x; // right
     }
 
-    if(!skip) {
-        // --- BORDER-RADIUS CLIPPING ---
-        bool discard_pixel =
-            checkCorner(UV, top, vec2(top, top), false, false) ||           // Top-left
-            checkCorner(UV, right, vec2(rect_size.x - right, right), true, false) || // Top-right
-            checkCorner(UV, bottom, vec2(rect_size.x - bottom, rect_size.y - bottom), true, true) || // Bottom-right
-            checkCorner(UV, left, vec2(left, rect_size.y - left), false, true);       // Bottom-left
+    // Vertical
+    if (align == 0 || align == 1 || align == 2) {
+        offset.y = 0.0; // top
+    } else if (align == 3 || align == 4 || align == 5) {
+        offset.y = (rect_size.y - new_size.y) * 0.5; // middle
+    } else {
+        offset.y = rect_size.y - new_size.y; // bottom
+    }
 
-        if (discard_pixel) COLOR.a = 0.0;
-        else COLOR = texture(TEXTURE, uv);
+    return offset;
+}
+
+void fragment() {
+    // Get offset based on align
+    vec2 offset = get_offset();
+    
+    // Transform UV into the new_size area (only if resize is enabled)
+    vec2 local_uv;
+    if (use_resize) {
+        local_uv = (UV * rect_size - offset) / new_size;
+    } else {
+        local_uv = UV;
+    }
+    
+    // Check if we're inside the aligned content area (only if resize is enabled)
+    bool inside_content = true;
+    if (use_resize) {
+        inside_content = local_uv.x >= 0.0 && local_uv.x <= 1.0 &&
+                         local_uv.y >= 0.0 && local_uv.y <= 1.0;
+    }
+    
+    // Get the stretched UV for texture sampling
+    vec2 stretched_uv = get_uv(local_uv);
+    
+    // Check if texture UV is outside valid range for certain stretch modes
+    bool texture_out_of_bounds = false;
+    if (stretch_mode == 3 || stretch_mode == 4 || stretch_mode == 5 || stretch_mode == 6) {
+        texture_out_of_bounds = (stretched_uv.x < 0.0 || stretched_uv.y < 0.0 || stretched_uv.x > 1.0 || stretched_uv.y > 1.0);
+    }
+    
+    // --- BORDER-RADIUS CLIPPING ---
+    bool discard_pixel =
+        checkCorner(UV, top, vec2(top, top), false, false) ||           // Top-left
+        checkCorner(UV, right, vec2(rect_size.x - right, right), true, false) || // Top-right
+        checkCorner(UV, bottom, vec2(rect_size.x - bottom, rect_size.y - bottom), true, true) || // Bottom-right
+        checkCorner(UV, left, vec2(left, rect_size.y - left), false, true);       // Bottom-left
+
+    if (discard_pixel) {
+        COLOR.a = 0.0;
+    } else {
+        // Handle content vs empty space
+        if (!use_resize || inside_content) {
+            if (texture_out_of_bounds) {
+                // Texture is out of bounds but we're inside content area - use fill color
+                COLOR = use_fill ? fill_color : vec4(0.0);
+            } else {
+                // Normal texture sampling
+                vec4 tex_color = texture(TEXTURE, stretched_uv);
+                COLOR = use_fill && tex_color.a == 0.0 ? fill_color : tex_color;
+            }
+        } else {
+            // Outside content area and resize is enabled - use fill color
+            COLOR = use_fill ? fill_color : vec4(0.0);
+        }
     }
 }

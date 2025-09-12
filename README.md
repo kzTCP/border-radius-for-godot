@@ -13,17 +13,20 @@ This guide explains how to apply rounded corners (**corner-radius / border-radiu
 ---
 
 ## 🎥 Demo Video
-
-[![My Video Showcase](https://img.youtube.com/vi/UM1I97-V_I8/0.jpg)](https://www.youtube.com/watch?v=UM1I97-V_I8)  
+[![My Video Showcase](https://img.youtube.com/vi/UM1I97-V_I8/0.jpg)](https://www.youtube.com/watch?v=UM1I97-V_I8)
 ▶️ *Click to watch my full demo on YouTube.*
+[![My Video Showcase](https://img.youtube.com/vi/68dlosOz77w/0.jpg)](https://www.youtube.com/watch?v=68dlosOz77w)
+▶️ *NEW: Enhanced features demo - Click to watch* 
 
----
 
 ## 🎯 Overview
 - Use a `Panel` as parent and a `TextureRect` with shader as child.  
 - Match **corner-radius** values between the two.  
 - Adjust size values if alignment looks off.  
 - Supports **stretch modes 0..7** (same as `TextureRect` in Godot).
+- **NEW**: Resize toggle to enable/disable content resizing
+- **NEW**: Resized Shape alignment options (9 positions)
+- **NEW**: Fill color for empty/transparent areas
 
 ---
 
@@ -64,6 +67,39 @@ It’s important to understand the difference between these two parameters:
 
 - The shader uses both values to calculate how the image should be mapped and **where the corner-radius should cut pixels.**
 
+## 🆕 Enhanced Features
+
+### Alignment Options (9 Positions)
+
+Control where your content appears within the rectangle:
+
+- `0`: Top Left
+- `1`: Top Center
+- `2`: Top Right
+- `3`: Center Left
+- `4`: Center (default)
+- `5`: Center Right
+- `6`: Bottom Left
+- `7`: Bottom Center
+- `8`: Bottom Right
+
+⚠️ Important: Alignment only works when `use_resize` is enabled!
+
+## Fill Color Options
+
+Replace transparent/empty areas with a custom color:
+
+- `use_fill`: Toggle fill color on/off
+
+- `fill_color`: Choose any color for empty areas
+
+## Resize Toggle
+
+`use_resize`: Enable/disable the resizing functionality. When enabled, applies:
+
+- alignment
+- size adjustments
+
 ## 🔗 Resources
 
 - 🎨 Godotshaders: [Corner-Radius Shader](https://godotshaders.com/shader/corner-radius/)  
@@ -72,10 +108,12 @@ It’s important to understand the difference between these two parameters:
 - 🎥 YouTube: [Godot Shaders: An Introduction (YouTube)](https://www.youtube.com/watch?v=JM09avtMlmE)  
 - 🤖 Border radius by [DeepSeek](https://chat.deepseek.com/)
 - 🤖 Stretch mode by [ChatGPT](https://chat.openai.com/)  
+- 🤖 Enhanced features collaboration between both AI systems (by DeepSeek)
 
 ---
 
 ## ✅ Summary
+
 By syncing the **Panel corner radius** with the **TextureRect shader radius**, you get perfectly rounded corners for images in **Godot**.
 
 Now with **stretch modes 0..7**, the shader works like `TextureRect` while preserving corner-radius clipping.
