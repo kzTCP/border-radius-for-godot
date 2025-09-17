@@ -27,8 +27,11 @@ uniform int align: hint_range(0, 8, 1) = 4;
 
 // Empty space behavior
 uniform bool use_fill = false;           
-uniform vec4 fill_color : hint_color = vec4(0.0, 0.0, 0.0, 255.0); // Default transparent
+uniform vec4 bg_color : hint_color = vec4(0.0, 0.0, 0.0, 1.0); // Default transparent
+uniform vec4 fg_color : hint_color = vec4(1.0, 1.0, 1.0, 0.0); // Default white
 
+// for fg color
+uniform float fg_alpha: hint_range(0.0, 1.0, 0.1) = 0.5;
 
 /* --- HELPERS --- */
 vec2 get_uv(vec2 uv) {
@@ -147,27 +150,38 @@ void fragment() {
     
     // --- BORDER-RADIUS CLIPPING ---
     bool discard_pixel =
-        checkCorner(UV, top, vec2(top, top), false, false) ||           // Top-left
-        checkCorner(UV, right, vec2(rect_size.x - right, right), true, false) || // Top-right
-        checkCorner(UV, bottom, vec2(rect_size.x - bottom, rect_size.y - bottom), true, true) || // Bottom-right
-        checkCorner(UV, left, vec2(left, rect_size.y - left), false, true);       // Bottom-left
+        checkCorner(UV, top, vec2(top, top), false, false) ||          
+        checkCorner(UV, right, vec2(rect_size.x - right, right), true, false) || 
+        checkCorner(UV, bottom, vec2(rect_size.x - bottom, rect_size.y - bottom), true, true) || 
+        checkCorner(UV, left, vec2(left, rect_size.y - left), false, true);
 
     if (discard_pixel) {
         COLOR.a = 0.0;
     } else {
-        // Handle content vs empty space
+		
         if (!use_resize || inside_content) {
+			
             if (texture_out_of_bounds) {
-                // Texture is out of bounds but we're inside content area - use fill color
-                COLOR = use_fill ? fill_color : vec4(0.0);
+                COLOR = use_fill ? bg_color : vec4(0.0);
             } else {
-                // Normal texture sampling
-                vec4 tex_color = texture(TEXTURE, stretched_uv);
-                COLOR = use_fill && tex_color.a == 0.0 ? fill_color : tex_color;
-            }
+				vec4 tex_color = texture(TEXTURE, stretched_uv);
+				if (use_fill) {
+					if(tex_color.a > fg_alpha){
+						COLOR = fg_color.a > 0.0? fg_color: tex_color;
+					}else{
+						COLOR = bg_color;
+					}
+					
+				} else {
+					COLOR = tex_color;
+				}
+        	}
+			
         } else {
             // Outside content area and resize is enabled - use fill color
-            COLOR = use_fill ? fill_color : vec4(0.0);
+            COLOR = use_fill ? bg_color : vec4(0.0);
         }
+		
     }
+	
 }

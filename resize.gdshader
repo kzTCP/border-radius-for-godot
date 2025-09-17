@@ -12,9 +12,11 @@ uniform int align: hint_range(0, 8, 1) = 4;
 
 // Empty space behavior
 uniform bool use_fill = false;           
-uniform vec4 fill_color : hint_color = vec4(0.0, 0.0, 0.0, 0.0); // Default transparent
+uniform vec4 bg_color : hint_color = vec4(0.0, 0.0, 0.0, 0.0); // Default transparent
+
 
 vec2 get_offset() {
+	
     vec2 offset = vec2(0.0);
 
     // Horizontal
@@ -49,12 +51,12 @@ void fragment() {
     vec2 local_uv = (uv - offset) / new_size;
 
     // Default = empty color or transparent
-    COLOR = recolor_empty ? empty_color : vec4(0.0);
+    COLOR = use_fill ? bg_color : vec4(0.0);
 
     // If inside the new_size box, overwrite with texture
     if (local_uv.x >= 0.0 && local_uv.x <= 1.0 &&
         local_uv.y >= 0.0 && local_uv.y <= 1.0) {
 		vec4 inner_uv = texture(TEXTURE, local_uv);
-        COLOR = recolor_empty && inner_uv == vec4(0.0)  ? empty_color : inner_uv;
+        COLOR = use_fill && inner_uv == vec4(0.0)  ? bg_color : inner_uv;
     }
 }
