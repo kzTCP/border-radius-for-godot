@@ -15,25 +15,35 @@ This guide explains how to apply rounded corners (**corner-radius / border-radiu
 ## 🎥 Demo Video
 [![My Video Showcase](https://img.youtube.com/vi/UM1I97-V_I8/0.jpg)](https://www.youtube.com/watch?v=UM1I97-V_I8)
 
-▶️ *Click to watch my full demo on YouTube.*
+▶️ *Version 1.0.0 - Border-radius customization demo*
 
 [![My Video Showcase](https://img.youtube.com/vi/68dlosOz77w/0.jpg)](https://www.youtube.com/watch?v=68dlosOz77w)
 
-▶️ *NEW: Enhanced features demo - Click to watch* 
+▶️ *Version 1.0.1 - Background color, stretch-mode and resize demo*
 
+[![My Video Showcase](https://img.youtube.com/vi/VN7V5UQ0Ri4/0.jpg)](https://www.youtube.com/watch?v=VN7V5UQ0Ri4)
+
+▶️ *NEW: Version 1.0.2 - Font color customization demo*
 
 ## 🎯 Overview
-- Use a `Panel` as parent and a `TextureRect` with shader as child.  
-- Match **corner-radius** values between the two.  
-- Adjust size values if alignment looks off.  
-- Supports **stretch modes 0..7** (same as `TextureRect` in Godot).
-- **NEW**: Resize toggle to enable/disable content resizing
-- **NEW**: Resized Shape alignment options (9 positions)
-- **NEW**: Fill color for empty/transparent areas
+
+- **v1.0.0**
+  - Use a `Panel` as parent and a `TextureRect` with shader as child.  
+  - Match **corner-radius** values between the two.  
+- **v1.0.1**
+  - Adjust size values if alignment looks off.  
+  - Supports **stretch modes 0..7** (same as `TextureRect` in Godot).
+  - Resize toggle to enable/disable content resizing
+  - Resized Shape alignment options (9 positions)
+  - Fill color for empty/transparent areas
+- **NEW**
+  - Foreground color customization for icon tinting
+  - Foreground alpha control for mixing between `bg` and `fg` `colors`
 
 ---
 
 ## ⚠️ Notes
+
 - Always keep the `TextureRect` and `Panel` the same size.  
 - If corners do not align perfectly, tweak the shader size slightly.  
 - **Stretch Modes:**
@@ -88,13 +98,16 @@ Control where your content appears within the rectangle:
 
 ⚠️ Important: Alignment only works when `use_resize` is enabled!
 
-## Fill Color Options
+## Fill Options (NEW)
 
-Replace transparent/empty areas with a custom color:
+Tint your icons/images with custom colors:
 
 - `use_fill`: Toggle fill color on/off
+- `bg_color`: Replace transparent/empty areas with a custom color
+- **`fg_color`**: A color value used for tinting the image. By default, the alpha in the `vec4` is set to **0**, so it does not affect the current icon’s color. If you increase the alpha above **0**, the tint is applied
+- `fg_alpha`: Control mixing between background and foreground colors
 
-- `fill_color`: Choose any color for empty areas
+Perfect for creating `icon buttons` with consistent color schemes!
 
 ## Resize Toggle
 
@@ -109,9 +122,10 @@ Replace transparent/empty areas with a custom color:
 - 🖼 Godotshaders: [Set Corner Radius for Texture](https://godotshaders.com/shader/set-corner-radius-for-texture/)  
 - 📘 Godot Docs: [Your First 2D Shader](https://docs.godotengine.org/en/3.6/tutorials/shaders/your_first_shader/your_first_2d_shader.html)  
 - 🎥 YouTube: [Godot Shaders: An Introduction (YouTube)](https://www.youtube.com/watch?v=JM09avtMlmE)  
-- 🤖 Border radius by [DeepSeek](https://chat.deepseek.com/)
+- 🤖 Border radius  by [DeepSeek](https://chat.deepseek.com/)
 - 🤖 Stretch mode by [ChatGPT](https://chat.openai.com/)  
-- 🤖 Enhanced features collaboration between both AI systems (by DeepSeek)
+- 🤖 V1.0.1 features collaboration between both AI systems (by `DeepSeek`)
+- 🤖 V1.0.2 features by `DeepSeek`
 
 ---
 
