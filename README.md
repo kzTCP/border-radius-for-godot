@@ -124,7 +124,7 @@ Perfect for creating `icon buttons` with consistent color schemes!
 - 🎥 YouTube: [Godot Shaders: An Introduction (YouTube)](https://www.youtube.com/watch?v=JM09avtMlmE)  
 - 🤖 Border radius  by [DeepSeek](https://chat.deepseek.com/)
 - 🤖 Stretch mode by [ChatGPT](https://chat.openai.com/)  
-- 🤖 V1.0.1 features collaboration between both AI systems (by `DeepSeek`)
+- 🤖 V1.0.1 features collaboration between both AI systems
 - 🤖 V1.0.2 features by `DeepSeek`
 
 ---
